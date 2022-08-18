@@ -1,6 +1,3 @@
-import { ChainId } from '@0x/contract-addresses';
-import { BigNumber } from '@0x/utils';
-
 import {
     ACRYPTOS_BSC_INFOS,
     APESWAP_ROUTER_BY_CHAIN_ID,
@@ -38,7 +35,9 @@ import {
     PANGOLIN_ROUTER_BY_CHAIN_ID,
     PLATYPUS_AVALANCHE_INFOS,
     QUICKSWAP_ROUTER_BY_CHAIN_ID,
+    SADDLE_FANTOM_INFOS,
     SADDLE_MAINNET_INFOS,
+    SADDLE_OPTIMISM_INFOS,
     SHELL_POOLS_BY_CHAIN_ID,
     SHIBASWAP_ROUTER_BY_CHAIN_ID,
     SPIRITSWAP_ROUTER_BY_CHAIN_ID,
@@ -58,6 +57,9 @@ import {
     YOSHI_ROUTER_BY_CHAIN_ID,
 } from './constants';
 import { CurveInfo, ERC20BridgeSource, PlatypusInfo } from './types';
+
+import { BigNumber } from '@0x/utils';
+import { ChainId } from '@0x/contract-addresses';
 
 // tslint:disable-next-line: completed-docs ban-types
 export function isValidAddress(address: string | String): address is string {
@@ -323,10 +325,14 @@ export function getEllipsisInfosForPair(chainId: ChainId, takerToken: string, ma
 }
 
 export function getSaddleInfosForPair(chainId: ChainId, takerToken: string, makerToken: string): CurveInfo[] {
-    if (chainId !== ChainId.Mainnet) {
-        return [];
+    const chainToInfosMap = {
+        [ChainId.Mainnet]: SADDLE_MAINNET_INFOS,
+        [ChainId.Fantom]: SADDLE_FANTOM_INFOS,
+        [ChainId.Optimism]: SADDLE_OPTIMISM_INFOS,
     }
-    return Object.values(SADDLE_MAINNET_INFOS).filter(c =>
+    const saddleChainInfos = chainToInfosMap[chainId]
+    if (!saddleChainInfos) return []
+    return Object.values(saddleChainInfos).filter(c =>
         [makerToken, takerToken].every(
             t =>
                 (c.tokens.includes(t) && c.metaTokens === undefined) ||

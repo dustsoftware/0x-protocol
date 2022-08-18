@@ -1,19 +1,18 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ExtendedQuoteReportSources, PriceComparisonsReport, QuoteReport } from '../quote_report_generator';
 import {
     FillQuoteTransformerLimitOrderInfo,
     FillQuoteTransformerOrderType,
     FillQuoteTransformerRfqOrderInfo,
 } from '@0x/protocol-utils';
-import { MarketOperation } from '@0x/types';
-import { BigNumber } from '@0x/utils';
-
 import { NativeOrderWithFillableAmounts, RfqFirmQuoteValidator, RfqRequestOpts } from '../../types';
 import { QuoteRequestor, V4RFQIndicativeQuoteMM } from '../../utils/quote_requestor';
-import { IRfqClient } from '../irfq_client';
-import { ExtendedQuoteReportSources, PriceComparisonsReport, QuoteReport } from '../quote_report_generator';
-import { TokenAdjacencyGraph } from '../token_adjacency_graph';
 
+import { BigNumber } from '@0x/utils';
+import { ChainId } from '@0x/contract-addresses';
+import { IRfqClient } from '../irfq_client';
+import { MarketOperation } from '@0x/types';
 import { SourceFilters } from './source_filters';
+import { TokenAdjacencyGraph } from '../token_adjacency_graph';
 
 /**
  * Order domain keys: chainId and exchange
@@ -134,6 +133,8 @@ export enum CurveFunctionSelectors {
     // Nerve BSC, Saddle Mainnet, Synapse
     swap = '0x91695586', // swap(uint8,uint8,uint256,uint256,uint256)
     calculateSwap = '0xa95b089f', // calculateSwap(uint8,uint8,uint256)
+    calculateSwapUnderlying = '0x75d8e3e4', // calculateSwapUnderlying(uint8,uint8,uint256)
+    swapUnderlying = '0x78e0fae8' // swapUnderlying(uint8,uint8,uint256,uint256,uint256)
 }
 // tslint:enable: enum-naming
 
